@@ -9,7 +9,7 @@
     android:layout_height="wrap_content" >
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/category_item_ic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_joke"
@@ -17,13 +17,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/category_item_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Desenvolvimento"
+        tools:text="Desenvolvimento"
         android:textSize="21sp"
         android:textStyle="bold"
         android:layout_marginStart="15dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+        app:layout_constraintBottom_toBottomOf="@+id/category_item_ic"
+        app:layout_constraintStart_toEndOf="@+id/category_item_ic"
+        app:layout_constraintTop_toTopOf="@+id/category_item_ic" />
 </androidx.constraintlayout.widget.ConstraintLayout>

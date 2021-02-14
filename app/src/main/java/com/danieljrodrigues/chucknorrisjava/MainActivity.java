@@ -5,9 +5,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
+import com.danieljrodrigues.chucknorrisjava.model.CategoryItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.xwray.groupie.GroupAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -15,8 +17,15 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private GroupAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +48,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        adapter = new GroupAdapter();
+        RecyclerView categoryRv = findViewById(R.id.category_rv);
+        categoryRv.setLayoutManager(new LinearLayoutManager(this));
+        categoryRv.setAdapter(adapter);
+
+        populateItems();
+    }
+
+    private void populateItems() {
+        List<CategoryItem> items = new ArrayList<>();
+        items.add(new CategoryItem("Catg1"));
+        items.add(new CategoryItem("Catg2"));
+        items.add(new CategoryItem("Catg3"));
+        items.add(new CategoryItem("Catg4"));
+        items.add(new CategoryItem("Catg5"));
+        items.add(new CategoryItem("Catg6"));
+
+        adapter.addAll(items);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
