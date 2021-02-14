@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:padding="15dp"
         tools:listitem="@layout/joke_category_item"
         tools:itemCount="5"/>
 
