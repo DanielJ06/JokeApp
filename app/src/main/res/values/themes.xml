@@ -1,9 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.ChuckNorrisJava" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
-        <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
     </style>
 
@@ -15,4 +13,17 @@
     <style name="Theme.ChuckNorrisJava.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.ChuckNorrisJava.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.ChuckNorrisJava.Fullscreen" parent="Theme.ChuckNorrisJava.NoActionBar">
+        <item name="android:actionBarStyle">
+            @style/Widget.Theme.ChuckNorrisJava.ActionBar.Fullscreen
+        </item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+
+    <style name="ThemeOverlay.ChuckNorrisJava.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+    </style>
 </resources>

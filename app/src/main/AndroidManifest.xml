@@ -10,15 +10,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChuckNorrisJava">
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.ChuckNorrisJava.NoActionBar">
+            android:name=".SplashActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_splash"
+            android:theme="@style/Theme.ChuckNorrisJava.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.ChuckNorrisJava.NoActionBar" />
     </application>
 
 </manifest>
