@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.Menu;
 
 import com.danieljrodrigues.chucknorrisjava.model.CategoryItem;
+import com.danieljrodrigues.chucknorrisjava.presenter.CategoryPresenter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -26,6 +27,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private GroupAdapter adapter;
+    private CategoryPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,19 +56,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         categoryRv.setLayoutManager(new LinearLayoutManager(this));
         categoryRv.setAdapter(adapter);
 
-        populateItems();
+        presenter = new CategoryPresenter(this);
+        presenter.requestAll();
     }
 
-    private void populateItems() {
-        List<CategoryItem> items = new ArrayList<>();
-        items.add(new CategoryItem("Catg1"));
-        items.add(new CategoryItem("Catg2"));
-        items.add(new CategoryItem("Catg3"));
-        items.add(new CategoryItem("Catg4"));
-        items.add(new CategoryItem("Catg5"));
-        items.add(new CategoryItem("Catg6"));
-
-        adapter.addAll(items);
+    public void showCategories(List<CategoryItem> categoryItems) {
+        adapter.addAll(categoryItems);
         adapter.notifyDataSetChanged();
     }
 
