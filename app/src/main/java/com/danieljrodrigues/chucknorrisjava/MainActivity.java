@@ -1,5 +1,6 @@
 package com.danieljrodrigues.chucknorrisjava;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private GroupAdapter adapter;
     private CategoryPresenter presenter;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         presenter = new CategoryPresenter(this);
         presenter.requestAll();
+    }
+
+    public void showProgressbar() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage(getString(R.string.loading));
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+        }
+        progressDialog.show();
+    }
+
+    public void hideProgressbar() {
+        if (progressDialog != null) {
+            progressDialog.hide();
+        }
     }
 
     public void showCategories(List<CategoryItem> categoryItems) {

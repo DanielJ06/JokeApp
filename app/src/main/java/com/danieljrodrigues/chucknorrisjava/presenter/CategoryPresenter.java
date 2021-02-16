@@ -1,5 +1,7 @@
 package com.danieljrodrigues.chucknorrisjava.presenter;
 
+import android.os.Handler;
+
 import com.danieljrodrigues.chucknorrisjava.MainActivity;
 import com.danieljrodrigues.chucknorrisjava.model.CategoryItem;
 
@@ -7,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryPresenter {
-    private final MainActivity mainActivity;
+    private final MainActivity view;
     private static List<CategoryItem> items = new ArrayList<>();
 
     static {
@@ -20,15 +22,27 @@ public class CategoryPresenter {
     }
 
     public CategoryPresenter(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
+        this.view = mainActivity;
     }
 
     public void requestAll() {
         // Request
+        this.view.showProgressbar();
         this.request();
     }
 
+    public void onSuccess(List<CategoryItem> data) {
+        view.showCategories(data);
+        onComplete();
+    }
+
+    public void onComplete() {
+        view.hideProgressbar();
+    }
+
     public void request() {
-        mainActivity.showCategories(items);
+        new Handler().postDelayed(() -> {
+            onSuccess(items);
+        }, 3000);
     }
 }
