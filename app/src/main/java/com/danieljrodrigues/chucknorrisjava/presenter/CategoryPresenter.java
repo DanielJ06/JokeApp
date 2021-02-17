@@ -3,46 +3,41 @@ package com.danieljrodrigues.chucknorrisjava.presenter;
 import android.os.Handler;
 
 import com.danieljrodrigues.chucknorrisjava.MainActivity;
+import com.danieljrodrigues.chucknorrisjava.datasource.CategoryRemoteDataSource;
 import com.danieljrodrigues.chucknorrisjava.model.CategoryItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryPresenter {
+public class CategoryPresenter implements CategoryRemoteDataSource.ListCategoriesCallback {
     private final MainActivity view;
-    private static List<CategoryItem> items = new ArrayList<>();
+    private final CategoryRemoteDataSource dataSource;
 
-    static {
-        items.add(new CategoryItem("Catg1"));
-        items.add(new CategoryItem("Catg2"));
-        items.add(new CategoryItem("Catg3"));
-        items.add(new CategoryItem("Catg4"));
-        items.add(new CategoryItem("Catg5"));
-        items.add(new CategoryItem("Catg6"));
-    }
-
-    public CategoryPresenter(MainActivity mainActivity) {
+    public CategoryPresenter(MainActivity mainActivity, CategoryRemoteDataSource dataSource) {
         this.view = mainActivity;
+        this.dataSource = dataSource;
     }
 
     public void requestAll() {
-        // Request
         this.view.showProgressbar();
-        this.request();
+        this.dataSource.findAll(this);
     }
 
-    public void onSuccess(List<CategoryItem> data) {
-        view.showCategories(data);
-        onComplete();
+    @Override
+    public void onSuccess(List<String> response) {
+        List<CategoryItem> categoryItems = new ArrayList<>();
+        for(String val : response) {
+            categoryItems.add(new CategoryItem(val));
+        }
+        view.showCategories(categoryItems);
+    }
+
+    @Override
+    public void onError(String message) {
+        this.view.showFailure(message);
     }
 
     public void onComplete() {
         view.hideProgressbar();
-    }
-
-    public void request() {
-        new Handler().postDelayed(() -> {
-            onSuccess(items);
-        }, 3000);
     }
 }

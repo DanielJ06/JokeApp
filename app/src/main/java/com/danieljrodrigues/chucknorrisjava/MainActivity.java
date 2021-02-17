@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
 
+import com.danieljrodrigues.chucknorrisjava.datasource.CategoryRemoteDataSource;
 import com.danieljrodrigues.chucknorrisjava.model.CategoryItem;
 import com.danieljrodrigues.chucknorrisjava.presenter.CategoryPresenter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.xwray.groupie.GroupAdapter;
@@ -58,8 +61,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         categoryRv.setLayoutManager(new LinearLayoutManager(this));
         categoryRv.setAdapter(adapter);
 
-        presenter = new CategoryPresenter(this);
+        CategoryRemoteDataSource dataSource = new CategoryRemoteDataSource();
+        presenter = new CategoryPresenter(this, dataSource);
         presenter.requestAll();
+    }
+
+    public void showFailure(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     public void showProgressbar() {
