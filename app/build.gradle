@@ -36,6 +36,8 @@ dependencies {
 
     // Adapter lib
     implementation 'com.xwray:groupie:2.1.0'
+    implementation 'androidx.navigation:navigation-fragment:2.3.3'
+    implementation 'androidx.navigation:navigation-ui:2.3.3'
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

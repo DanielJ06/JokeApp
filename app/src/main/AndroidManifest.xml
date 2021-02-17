@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChuckNorrisJava">
         <activity
+            android:name=".JokeActivity"
+            android:label="@string/title_activity_joke"
+            android:theme="@style/Theme.ChuckNorrisJava.NoActionBar" />
+        <activity
             android:name=".SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_splash"

@@ -22,6 +22,10 @@ public class CategoryItem extends Item<ViewHolder> {
         categoryTitleText.setText(categoryTitle);
     }
 
+    public String getCategoryTitle() {
+        return categoryTitle;
+    }
+
     @Override
     public int getLayout() {
         return R.layout.joke_category_item;

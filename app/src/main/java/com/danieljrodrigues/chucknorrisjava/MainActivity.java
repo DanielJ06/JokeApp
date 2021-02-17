@@ -1,6 +1,7 @@
 package com.danieljrodrigues.chucknorrisjava;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,6 +58,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         adapter = new GroupAdapter();
+
+        adapter.setOnItemClickListener(((item, view) -> {
+            Intent intent = new Intent(MainActivity.this, JokeActivity.class);
+
+            CategoryItem categoryItem = (CategoryItem) item;
+
+            intent.putExtra(JokeActivity.CATEGORY_KEY, categoryItem.getCategoryTitle());
+            startActivity(intent);
+        }));
+
         RecyclerView categoryRv = findViewById(R.id.category_rv);
         categoryRv.setLayoutManager(new LinearLayoutManager(this));
         categoryRv.setAdapter(adapter);
