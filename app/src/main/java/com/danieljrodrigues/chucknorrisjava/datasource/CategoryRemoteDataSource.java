@@ -15,6 +15,10 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class CategoryRemoteDataSource {
 
     public interface ListCategoriesCallback {
@@ -26,59 +30,22 @@ public class CategoryRemoteDataSource {
     }
 
     public void findAll(ListCategoriesCallback cb) {
-        new CategoryTask(cb).execute();
-    }
-
-    private static class CategoryTask extends AsyncTask<Void, Void, List<String>> {
-
-        private final ListCategoriesCallback listCategoriesCallback;
-        private String errorMessage;
-
-        private CategoryTask(ListCategoriesCallback listCategoriesCallback) {
-            this.listCategoriesCallback = listCategoriesCallback;
-        }
-
-        @Override
-        protected List<String> doInBackground(Void... voids) {
-            List<String> response = new ArrayList<>();
-            HttpsURLConnection urlConnection = null;
-
-            try {
-                URL url = new URL(Endpoint.GET_CATEGORIES);
-                urlConnection = (HttpsURLConnection) url.openConnection();
-                urlConnection.setReadTimeout(2000);
-                urlConnection.setConnectTimeout(3000);
-
-                int responseCode = urlConnection.getResponseCode();
-                if(responseCode > 400) {
-                    throw new IOException("Erro ao conectar com o servidor");
+        HTTPClient.retrofit().create(ChuckNorrisApi.class)
+        .findAll()
+        .enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                if (response.isSuccessful()) {
+                    cb.onSuccess(response.body());
                 }
-
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-
-                JsonReader jsonReader = new JsonReader(new InputStreamReader(in));
-                jsonReader.beginArray();
-
-                while (jsonReader.hasNext()) {
-                    response.add(jsonReader.nextString());
-                }
-                jsonReader.endArray();
-            } catch (IOException e) {
-                errorMessage = e.getMessage();
+                cb.onComplete();
             }
 
-            return response;
-        }
-
-        @Override
-        protected void onPostExecute(List<String> strings) {
-            if (errorMessage != null) {
-                listCategoriesCallback.onError(errorMessage);
-            } else {
-                listCategoriesCallback.onSuccess(strings);
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+                cb.onError(t.getMessage());
+                cb.onComplete();
             }
-            listCategoriesCallback.onComplete();
-        }
+        });
     }
-
 }
