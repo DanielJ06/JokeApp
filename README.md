@@ -1,6 +1,6 @@
 <div>
 <img src=".github/splash.png" width="250" />
-<img src=".github/home.png" width="250" />
+<img src=".github/main.png" width="250" />
 <img src=".github/joke.png" width="250" />
 </div>
 
