@@ -5,6 +5,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.danieljrodrigues.chucknorrisjava.R;
+import com.google.gson.annotations.SerializedName;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.ViewHolder;
 

@@ -17,6 +17,10 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class JokeRemoteDataSource {
 
     public interface JokeCallback {
@@ -28,76 +32,22 @@ public class JokeRemoteDataSource {
     }
 
     public void findJokeBy(JokeCallback cb, String categoryName) {
-        new JokeTask(cb, categoryName).execute();
-    }
-
-    private static class JokeTask extends AsyncTask<Void, Void, Joke> {
-
-        private final String category;
-        private final JokeCallback callback;
-        private String errorMessage;
-
-        public JokeTask(JokeCallback cb, String category) {
-            this.callback = cb;
-            this.category = category;
-        }
-
-        @Override
-        protected Joke doInBackground(Void... voids) {
-            Joke joke = null;
-            HttpsURLConnection urlConnection = null;
-
-            try {
-                String endpoint = String.format("%s?category=%s", Endpoint.GET_JOKE, category);
-                URL url = new URL(endpoint);
-                urlConnection = (HttpsURLConnection) url.openConnection();
-                urlConnection.setReadTimeout(2000);
-                urlConnection.setConnectTimeout(3000);
-
-                int responseCode = urlConnection.getResponseCode();
-                if(responseCode > 400) {
-                    throw new IOException("Erro ao conectar com o servidor");
-                }
-
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-
-                JsonReader jsonReader = new JsonReader(new InputStreamReader(in));
-
-                jsonReader.beginObject();
-
-                String value = null;
-
-                while (jsonReader.hasNext()) {
-                    JsonToken token = jsonReader.peek();
-
-                    if(token == JsonToken.NAME) {
-                        String name = jsonReader.nextName();
-                        if (name.equals("value")) {
-                            value = jsonReader.nextString();
-                        } else {
-                            jsonReader.skipValue();
-                        }
+        HTTPClient.retrofit().create(ChuckNorrisApi.class)
+            .findRandomBy(categoryName)
+            .enqueue(new Callback<Joke>() {
+                @Override
+                public void onResponse(Call<Joke> call, Response<Joke> response) {
+                    if (response.isSuccessful()) {
+                        cb.onSuccess(response.body());
                     }
+                    cb.onComplete();
                 }
 
-                joke = new Joke(value);
-                jsonReader.endObject();
-
-            } catch (IOException e) {
-                errorMessage = e.getMessage();
-            }
-
-            return joke;
-        }
-
-        @Override
-        protected void onPostExecute(Joke joke) {
-            if (errorMessage != null) {
-                callback.onError(errorMessage);
-            } else {
-                callback.onSuccess(joke);
-            }
-            callback.onComplete();
-        }
+                @Override
+                public void onFailure(Call<Joke> call, Throwable t) {
+                    cb.onError(t.getMessage());
+                    cb.onComplete();
+                }
+            });
     }
 }
